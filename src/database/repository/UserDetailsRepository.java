@@ -1,7 +1,7 @@
 package database.repository;
 
 import database.entity.UserDetails;
-import database.service.Connector;
+import database.Connector;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,8 +11,8 @@ import java.sql.SQLException;
 public class UserDetailsRepository {
     private UserDetailsRepository() {}
 
-    public UserDetails findByName(String name) throws SQLException {
-        String query = "SELECT * FROM user_details WHERE name = ?";
+    public UserDetails findByEmail(String email) throws SQLException {
+        String query = "SELECT * FROM user_details WHERE email = ?";
 
         Connection connection = Connector.getConnection();
         if (connection == null) {
@@ -20,14 +20,14 @@ public class UserDetailsRepository {
         }
 
         PreparedStatement ps = connection.prepareStatement(query);
-        ps.setString(1, name);
+        ps.setString(1, email);
         ResultSet rs = ps.executeQuery();
 
         UserDetails userDetails = null;
         if (rs.next()) {
             userDetails = new UserDetails();
             userDetails.setId(rs.getInt("id"));
-            userDetails.setName(rs.getString("name"));
+            userDetails.setEmail(rs.getString("email"));
             userDetails.setHash(rs.getString("hash"));
         }
 

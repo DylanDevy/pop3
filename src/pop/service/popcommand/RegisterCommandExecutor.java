@@ -31,26 +31,26 @@ public class RegisterCommandExecutor implements PopCommandExecutorInterface {
 
         String[] commandParts = command.split(" ");
         if (commandParts.length != 3) {
-            return PopCommandExecutor.WRONG_COMMAND_INPUT + " Use: REGISTER name password";
+            return PopCommandExecutor.WRONG_COMMAND_INPUT + " Use: REGISTER email password";
         }
-        String name = commandParts[1];
+        String email = commandParts[1];
 
         try {
-            if (userDetailsRepository.findByName(name) == null) {
-                return registerUser(name, commandParts[2])
-                        ? "+OK user " + name + " registered successfully"
+            if (userDetailsRepository.findByEmail(email) == null) {
+                return registerUser(email, commandParts[2])
+                        ? "+OK user " + email + " registered successfully"
                         : PopCommandExecutor.SERVER_ERROR_MESSAGE;
             }
 
-            return "-ERR hmm it seems that I already know " + name;
+            return "-ERR hmm it seems that I already know " + email;
         } catch (SQLException e) {
             return PopCommandExecutor.SERVER_ERROR_MESSAGE;
         }
     }
 
-    private boolean registerUser(String name, String password) throws SQLException {
+    private boolean registerUser(String email, String password) throws SQLException {
         UserDetails userDetails = new UserDetails();
-        userDetails.setName(name);
+        userDetails.setEmail(email);
         userDetails.setHash(encryptor.encrypt(password));
 
         return userDetailsManager.createUserDetails(userDetails) > 0;

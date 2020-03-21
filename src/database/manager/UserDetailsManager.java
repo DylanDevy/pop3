@@ -1,7 +1,7 @@
 package database.manager;
 
 import database.entity.UserDetails;
-import database.service.Connector;
+import database.Connector;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,7 +11,7 @@ public class UserDetailsManager {
     private UserDetailsManager() {}
 
     public int createUserDetails(UserDetails userDetails) throws SQLException {
-        String query = "INSERT INTO user_details(name, hash) VALUES(?, ?)";
+        String query = "INSERT INTO user_details(email, hash) VALUES(?, ?)";
 
         Connection connection = Connector.getConnection();
         if (connection == null) {
@@ -19,7 +19,7 @@ public class UserDetailsManager {
         }
 
         PreparedStatement ps = connection.prepareStatement(query);
-        ps.setString(1, userDetails.getName());
+        ps.setString(1, userDetails.getEmail());
         ps.setString(2, userDetails.getHash());
 
         int inserted = ps.executeUpdate();

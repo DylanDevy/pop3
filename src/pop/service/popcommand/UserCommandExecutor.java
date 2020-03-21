@@ -21,18 +21,18 @@ public class UserCommandExecutor implements PopCommandExecutorInterface {
 
         String[] commandParts = command.split(" ");
         if (commandParts.length != 2){
-            return PopCommandExecutor.WRONG_COMMAND_INPUT + " Use: USER name";
+            return PopCommandExecutor.WRONG_COMMAND_INPUT + " Use: USER email";
         }
-        String name = commandParts[1];
+        String email = commandParts[1];
 
         try {
-            UserDetails userDetails = userDetailsRepository.findByName(name);
+            UserDetails userDetails = userDetailsRepository.findByEmail(email);
             if (userDetails == null) {
-                return "-ERR haven't heard of " + name;
+                return "-ERR haven't heard of " + email;
             }
             session.setUserDetails(userDetails);
 
-            return "+OK hello, " + name;
+            return "+OK hello, " + email;
         } catch (SQLException e) {
             return PopCommandExecutor.SERVER_ERROR_MESSAGE;
         }

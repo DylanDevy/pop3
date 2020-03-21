@@ -2,7 +2,7 @@ package database.entity;
 
 public class UserDetails {
     private Integer id;
-    private String name;
+    private String email;
     private String hash;
 
     public int getId() {
@@ -13,12 +13,12 @@ public class UserDetails {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getEmail() {
+        return email;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getHash() {
