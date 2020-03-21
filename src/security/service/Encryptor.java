@@ -2,31 +2,38 @@ package security.service;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
-import javax.xml.bind.DatatypeConverter;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Base64;
 
 public class Encryptor implements EncryptorInterface {
-    private final int ITERATIONS = 10000;
-    private final int PBE_KEY_LENGTH = 256;
-    private final int SALT_LENGTH = 32;
-    private final String DELIMITER = ":";
+    private final int iterations;
+    private final int pbeKeyLength;
+    private final int saltLength;
+    private final String delimiter;
 
-    public String encrypt(String password) {
-        byte[] salt = getSecureRandomBytes(this.SALT_LENGTH);
-
-        PBEKeySpec pbeKeySpec = new PBEKeySpec(password.toCharArray(), salt, this.ITERATIONS, this.PBE_KEY_LENGTH);
-
-        return DatatypeConverter.printHexBinary(getEncodedHash(pbeKeySpec)) + this.DELIMITER + DatatypeConverter.printHexBinary(salt);
+    private Encryptor(int iterations, int pbeKeyLength, int saltLength, String delimiter) {
+        this.iterations = iterations;
+        this.pbeKeyLength = pbeKeyLength;
+        this.saltLength = saltLength;
+        this.delimiter = delimiter;
     }
 
-    public boolean matches(String matchPassword, String storedPassword) {
-        String[] hashSalt = storedPassword.split(this.DELIMITER);
-        byte[] hash = DatatypeConverter.parseHexBinary(hashSalt[0]);
-        byte[] salt = DatatypeConverter.parseHexBinary(hashSalt[1]);
+    public String encrypt(String value) {
+        byte[] salt = getSecureRandomBytes(saltLength);
 
-        PBEKeySpec pbeKeySpec = new PBEKeySpec(matchPassword.toCharArray(), salt, this.ITERATIONS, this.PBE_KEY_LENGTH);
+        PBEKeySpec pbeKeySpec = new PBEKeySpec(value.toCharArray(), salt, iterations, pbeKeyLength);
+
+        return bytesToString(getEncodedHash(pbeKeySpec)) + delimiter + bytesToString(salt);
+    }
+
+    public boolean matches(String matchValue, String encryptedValue) {
+        String[] hashSalt = encryptedValue.split(delimiter);
+        byte[] hash = stringToBytes(hashSalt[0]);
+        byte[] salt = stringToBytes(hashSalt[1]);
+
+        PBEKeySpec pbeKeySpec = new PBEKeySpec(matchValue.toCharArray(), salt, iterations, pbeKeyLength);
 
         return byteEquals(hash, getEncodedHash(pbeKeySpec));
     }
@@ -38,6 +45,14 @@ public class Encryptor implements EncryptorInterface {
         }
 
         return diff == 0;
+    }
+
+    private String bytesToString(byte[] bytes) {
+        return Base64.getEncoder().encodeToString(bytes);
+    }
+
+    private byte[] stringToBytes(String string) {
+        return Base64.getDecoder().decode(string);
     }
 
     private byte[] getEncodedHash(PBEKeySpec pbeKeySpec) {
@@ -67,5 +82,40 @@ public class Encryptor implements EncryptorInterface {
         }
 
         return bytes;
+    }
+
+    public static class Builder {
+        private int iterations;
+        private int pbeKeyLength;
+        private int saltLength;
+        private String delimiter;
+
+        public Builder setIterations(int iterations) {
+            this.iterations = iterations;
+
+            return this;
+        }
+
+        public Builder setPbeKeyLength(int pbeKeyLength) {
+            this.pbeKeyLength = pbeKeyLength;
+
+            return this;
+        }
+
+        public Builder setSaltLength(int saltLength) {
+            this.saltLength = saltLength;
+
+            return this;
+        }
+
+        public Builder setDelimiter(String delimiter) {
+            this.delimiter = delimiter;
+
+            return this;
+        }
+
+        public Encryptor build() {
+            return new Encryptor(iterations, pbeKeyLength, saltLength, delimiter);
+        }
     }
 }

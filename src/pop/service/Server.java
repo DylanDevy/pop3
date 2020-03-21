@@ -1,20 +1,22 @@
 package pop.service;
 
-import javax.net.ssl.SSLServerSocketFactory;
+import pop.entity.Session;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 
 public class Server {
     public static void main(String[] args) {
-        System.setProperty("javax.net.ssl.keyStore", "server.key.store");
-        System.setProperty("javax.net.ssl.keyStorePassword", "password");
-        System.setProperty("javax.net.ssl.trustStore", "client.key.store");
-
         try {
-            ServerSocket serverSocket = SSLServerSocketFactory.getDefault().createServerSocket(110);
-            System.out.println("<<SERVER READY>>");
+            ServerSocket serverSocket = new ServerSocket(110);
+            System.out.println("<><<>>< POP3 SERVER IS READY ><<>><>");
+            PopSessionThread.Builder popSessionThreadBuilder = BaseSessionBuilder.getPopSessionThreadBuilder();
             while (true) {
-                new PopSessionThread(serverSocket.accept()).start();
+                popSessionThreadBuilder
+                        .setSocket(serverSocket.accept())
+                        .setSession(new Session())
+                        .build()
+                        .start();
             }
         } catch (IOException e) {
             e.printStackTrace();
