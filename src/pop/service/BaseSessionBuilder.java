@@ -1,12 +1,15 @@
 package pop.service;
 
-import database.manager.UserDetailsManager;
-import database.repository.UserDetailsRepository;
+import maildrop.repository.MessageRepository;
+import maildrop.service.MaildropManager;
+import maildrop.service.MessageManager;
 import pop.service.popcommand.PassCommandExecutor;
 import pop.service.popcommand.PopCommandExecutor;
 import pop.service.popcommand.RegisterCommandExecutor;
 import pop.service.popcommand.UserCommandExecutor;
 import security.service.Encryptor;
+import user.repository.UserRepository;
+import user.service.UserManager;
 
 public class BaseSessionBuilder {
     public static PopSessionThread.Builder getPopSessionThreadBuilder() {
@@ -22,16 +25,16 @@ public class BaseSessionBuilder {
                                         .setDelimiter(":")
                                         .build()
                                 )
-                                .setUserDetailsRepository(new UserDetailsRepository.Builder()
+                                .setUserRepository(new UserRepository.Builder()
                                         .build())
-                                .setUserDetailsManager(new UserDetailsManager.Builder()
+                                .setUserManager(new UserManager.Builder()
                                         .build()
                                 )
                                 .build(),
                                 "REGISTER"
                         )
                         .addPopCommand(new UserCommandExecutor.Builder()
-                                .setUserDetailsRepository(new UserDetailsRepository.Builder()
+                                .setUserRepository(new UserRepository.Builder()
                                         .build()
                                 )
                                 .build(), "USER"
@@ -42,6 +45,15 @@ public class BaseSessionBuilder {
                                         .setPbeKeyLength(256)
                                         .setSaltLength(32)
                                         .setDelimiter(":")
+                                        .build()
+                                )
+                                .setMaildropManager(new MaildropManager.Builder()
+                                        .setMessageManager(new MessageManager.Builder()
+                                                .setMessageRepository(new MessageRepository.Builder()
+                                                        .build()
+                                                )
+                                                .build()
+                                        )
                                         .build()
                                 )
                                 .build(), "PASS"

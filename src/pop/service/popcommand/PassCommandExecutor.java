@@ -1,14 +1,19 @@
 package pop.service.popcommand;
 
+import maildrop.service.MaildropManager;
 import pop.entity.Session;
 import pop.enumeration.State;
 import security.service.EncryptorInterface;
 
+import java.sql.SQLException;
+
 public class PassCommandExecutor implements PopCommandExecutorInterface {
     private final EncryptorInterface encryptor;
+    private final MaildropManager maildropManager;
 
-    private PassCommandExecutor(EncryptorInterface encryptor) {
+    private PassCommandExecutor(EncryptorInterface encryptor, MaildropManager maildropManager) {
         this.encryptor = encryptor;
+        this.maildropManager = maildropManager;
     }
 
     public String execute(String command, Session session) {
@@ -16,7 +21,7 @@ public class PassCommandExecutor implements PopCommandExecutorInterface {
             return PopCommandExecutor.COMMAND_UNAVAILABLE;
         }
 
-        if (session.getUserDetails() == null) {
+        if (session.getUser() == null) {
             return "-ERR who are you? May want to introduce yourself with USER";
         }
 
@@ -25,16 +30,22 @@ public class PassCommandExecutor implements PopCommandExecutorInterface {
             return PopCommandExecutor.WRONG_COMMAND_INPUT + " Use: PASS password";
         }
 
-        if (!encryptor.matches(commandParts[1], session.getUserDetails().getHash())) {
+        if (!encryptor.matches(commandParts[1], session.getUser().getHash())) {
             return "-ERR password is a little off.. or a lot";
         }
-        session.setState(State.TRANSACTION);
+        try {
+            session.setMaildrop(maildropManager.getUserMaildrop(session.getUser()));
+            session.setState(State.TRANSACTION);
+        } catch (SQLException e) {
+            return PopCommandExecutor.SERVER_ERROR_MESSAGE;
+        }
 
-        return "+OK success";
+        return "+OK success, your messages are ready";
     }
 
     public static class Builder {
         private EncryptorInterface encryptor;
+        private MaildropManager maildropManager;
 
         public Builder setEncryptor(EncryptorInterface encryptor) {
             this.encryptor = encryptor;
@@ -42,8 +53,14 @@ public class PassCommandExecutor implements PopCommandExecutorInterface {
             return this;
         }
 
+        public Builder setMaildropManager(MaildropManager maildropManager) {
+            this.maildropManager = maildropManager;
+
+            return this;
+        }
+
         public PassCommandExecutor build() {
-            return new PassCommandExecutor(encryptor);
+            return new PassCommandExecutor(encryptor, maildropManager);
         }
     }
 }

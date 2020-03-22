@@ -1,11 +1,13 @@
 package pop.entity;
 
-import database.entity.UserDetails;
+import maildrop.entity.Maildrop;
 import pop.enumeration.State;
+import user.entity.User;
 
 public class Session {
     private State state;
-    private UserDetails userDetails;
+    private User user;
+    private Maildrop maildrop;
 
     public Session() {
         this.state = State.AUTHORIZATION;
@@ -19,11 +21,19 @@ public class Session {
         this.state = state;
     }
 
-    public UserDetails getUserDetails() {
-        return userDetails;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserDetails(UserDetails userDetails) {
-        this.userDetails = userDetails;
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Maildrop getMaildrop() {
+        return maildrop;
+    }
+
+    public void setMaildrop(Maildrop maildrop) {
+        this.maildrop = maildrop;
     }
 }

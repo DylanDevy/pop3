@@ -1,7 +1,7 @@
-package database.entity;
+package user.entity;
 
-public class UserDetails {
-    private Integer id;
+public class User {
+    private int id;
     private String email;
     private String hash;
 
@@ -9,7 +9,7 @@ public class UserDetails {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 

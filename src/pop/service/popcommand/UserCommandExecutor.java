@@ -1,17 +1,17 @@
 package pop.service.popcommand;
 
-import database.entity.UserDetails;
-import database.repository.UserDetailsRepository;
 import pop.entity.Session;
 import pop.enumeration.State;
+import user.entity.User;
+import user.repository.UserRepository;
 
 import java.sql.SQLException;
 
 public class UserCommandExecutor implements PopCommandExecutorInterface {
-    private final UserDetailsRepository userDetailsRepository;
+    private final UserRepository userRepository;
 
-    private UserCommandExecutor(UserDetailsRepository userDetailsRepository) {
-        this.userDetailsRepository = userDetailsRepository;
+    private UserCommandExecutor(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     public String execute(String command, Session session) {
@@ -26,11 +26,11 @@ public class UserCommandExecutor implements PopCommandExecutorInterface {
         String email = commandParts[1];
 
         try {
-            UserDetails userDetails = userDetailsRepository.findByEmail(email);
-            if (userDetails == null) {
+            User user = userRepository.findByEmail(email);
+            if (user == null) {
                 return "-ERR haven't heard of " + email;
             }
-            session.setUserDetails(userDetails);
+            session.setUser(user);
 
             return "+OK hello, " + email;
         } catch (SQLException e) {
@@ -39,16 +39,16 @@ public class UserCommandExecutor implements PopCommandExecutorInterface {
     }
 
     public static class Builder {
-        private UserDetailsRepository userDetailsRepository;
+        private UserRepository userRepository;
 
-        public Builder setUserDetailsRepository(UserDetailsRepository userDetailsRepository) {
-            this.userDetailsRepository = userDetailsRepository;
+        public Builder setUserRepository(UserRepository userRepository) {
+            this.userRepository = userRepository;
 
             return this;
         }
 
         public UserCommandExecutor build() {
-            return new UserCommandExecutor(userDetailsRepository);
+            return new UserCommandExecutor(userRepository);
         }
     }
 }

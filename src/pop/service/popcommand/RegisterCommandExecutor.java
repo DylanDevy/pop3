@@ -1,27 +1,27 @@
 package pop.service.popcommand;
 
-import database.entity.UserDetails;
-import database.manager.UserDetailsManager;
-import database.repository.UserDetailsRepository;
 import pop.entity.Session;
 import pop.enumeration.State;
 import security.service.EncryptorInterface;
+import user.entity.User;
+import user.repository.UserRepository;
+import user.service.UserManager;
 
 import java.sql.SQLException;
 
 public class RegisterCommandExecutor implements PopCommandExecutorInterface {
     private final EncryptorInterface encryptor;
-    private final UserDetailsRepository userDetailsRepository;
-    private final UserDetailsManager userDetailsManager;
+    private final UserRepository userRepository;
+    private final UserManager userManager;
 
     private RegisterCommandExecutor(
             EncryptorInterface encryptor,
-            UserDetailsRepository userDetailsRepository,
-            UserDetailsManager userDetailsManager
+            UserRepository userRepository,
+            UserManager userManager
     ) {
         this.encryptor = encryptor;
-        this.userDetailsRepository = userDetailsRepository;
-        this.userDetailsManager = userDetailsManager;
+        this.userRepository = userRepository;
+        this.userManager = userManager;
     }
 
     public String execute(String command, Session session) {
@@ -36,7 +36,7 @@ public class RegisterCommandExecutor implements PopCommandExecutorInterface {
         String email = commandParts[1];
 
         try {
-            if (userDetailsRepository.findByEmail(email) == null) {
+            if (userRepository.findByEmail(email) == null) {
                 return registerUser(email, commandParts[2])
                         ? "+OK user " + email + " registered successfully"
                         : PopCommandExecutor.SERVER_ERROR_MESSAGE;
@@ -49,17 +49,17 @@ public class RegisterCommandExecutor implements PopCommandExecutorInterface {
     }
 
     private boolean registerUser(String email, String password) throws SQLException {
-        UserDetails userDetails = new UserDetails();
-        userDetails.setEmail(email);
-        userDetails.setHash(encryptor.encrypt(password));
+        User user = new User();
+        user.setEmail(email);
+        user.setHash(encryptor.encrypt(password));
 
-        return userDetailsManager.createUserDetails(userDetails) > 0;
+        return userManager.createUser(user) > 0;
     }
 
     public static class Builder {
         private EncryptorInterface encryptor;
-        private UserDetailsRepository userDetailsRepository;
-        private UserDetailsManager userDetailsManager;
+        private UserRepository userRepository;
+        private UserManager userManager;
 
         public Builder setEncryptor(EncryptorInterface encryptor) {
             this.encryptor = encryptor;
@@ -67,20 +67,20 @@ public class RegisterCommandExecutor implements PopCommandExecutorInterface {
             return this;
         }
 
-        public Builder setUserDetailsRepository(UserDetailsRepository userDetailsRepository) {
-            this.userDetailsRepository = userDetailsRepository;
+        public Builder setUserRepository(UserRepository userRepository) {
+            this.userRepository = userRepository;
 
             return this;
         }
 
-        public Builder setUserDetailsManager(UserDetailsManager userDetailsManager) {
-            this.userDetailsManager = userDetailsManager;
+        public Builder setUserManager(UserManager userManager) {
+            this.userManager = userManager;
 
             return this;
         }
 
         public RegisterCommandExecutor build() {
-            return new RegisterCommandExecutor(encryptor, userDetailsRepository, userDetailsManager);
+            return new RegisterCommandExecutor(encryptor, userRepository, userManager);
         }
     }
 }
