@@ -53,7 +53,7 @@ public class Init {
                         "content_type VARCHAR(30) NOT NULL," +
                         "charset VARCHAR(30) NOT NULL," +
                         "content TEXT," +
-                        "deleted BIT DEFAULT b'0'," +
+                        "deleted BIT DEFAULT 0," +
                         "date_deleted TIMESTAMP," +
                         "PRIMARY KEY (id)," +
                         "INDEX idx_messages_to_email(to_email)," +

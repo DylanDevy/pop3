@@ -21,10 +21,14 @@ public class MaildropManager {
 
         int totalSize = 0;
         int octetSize;
+        int messageNumber = 1;
         for (Message message : messages) {
             octetSize = message.getContent().getBytes(Charset.forName(message.getCharset())).length;
             message.setOctetSize(octetSize);
+            message.setMessageNumber(messageNumber);
+
             totalSize += octetSize;
+            messageNumber++;
         }
 
         maildrop.setMessages(messages);

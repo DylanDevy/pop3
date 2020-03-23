@@ -3,10 +3,7 @@ package pop.service;
 import maildrop.repository.MessageRepository;
 import maildrop.service.MaildropManager;
 import maildrop.service.MessageManager;
-import pop.service.popcommand.PassCommandExecutor;
-import pop.service.popcommand.PopCommandExecutor;
-import pop.service.popcommand.RegisterCommandExecutor;
-import pop.service.popcommand.UserCommandExecutor;
+import pop.service.popcommand.*;
 import security.service.Encryptor;
 import user.repository.UserRepository;
 import user.service.UserManager;
@@ -37,7 +34,8 @@ public class BaseSessionBuilder {
                                 .setUserRepository(new UserRepository.Builder()
                                         .build()
                                 )
-                                .build(), "USER"
+                                .build(),
+                                "USER"
                         )
                         .addPopCommand(new PassCommandExecutor.Builder()
                                 .setEncryptor(new Encryptor.Builder()
@@ -56,7 +54,12 @@ public class BaseSessionBuilder {
                                         )
                                         .build()
                                 )
-                                .build(), "PASS"
+                                .build(),
+                                "PASS"
+                        )
+                        .addPopCommand(new StatCommandExecutor.Builder()
+                                .build(),
+                                "STAT"
                         )
                         .build()
                 )

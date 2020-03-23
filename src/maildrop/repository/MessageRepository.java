@@ -12,7 +12,7 @@ import java.util.List;
 
 public class MessageRepository {
     public List<Message> findAllByToEmail(String toEmail) throws SQLException {
-        String query = "SELECT * FROM messages WHERE to_email = ? AND deleted = b'0' ORDER BY date_sent ASC";
+        String query = "SELECT * FROM messages WHERE to_email = ? AND NOT deleted ORDER BY date_sent ASC";
 
         Connection connection = DatabaseConnection.getConnection();
         if (connection == null) {
