@@ -65,6 +65,10 @@ public class BaseSessionBuilder {
                                         .build(),
                                 "LIST"
                         )
+                        .addPopCommand(new RetrCommandExecutor.Builder()
+                                        .build(),
+                                "RETR"
+                        )
                         .build()
                 )
         ;

@@ -151,6 +151,7 @@ public class Message {
                 "\nMime version: " + mimeVersion +
                 "\nContent type: " + contentType +
                 "\nCharset: " + charset +
-                "\nContent: " + content;
+                "\nContent: " + content +
+                "\n.";
     }
 }
