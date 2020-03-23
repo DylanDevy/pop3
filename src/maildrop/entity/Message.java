@@ -1,6 +1,7 @@
 package maildrop.entity;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class Message {
     private int id;
@@ -137,5 +138,19 @@ public class Message {
 
     public void setMessageNumber(int messageNumber) {
         this.messageNumber = messageNumber;
+    }
+
+    @Override
+    public String toString() {
+        return "Received by: " + toEmail +
+                "\nReceived date: " + LocalDateTime.now() +
+                "\nFrom: " + fromEmail +
+                "\nTo: " + toEmail +
+                "\nSubject: " + subject +
+                "\nDate sent: " + dateSent +
+                "\nMime version: " + mimeVersion +
+                "\nContent type: " + contentType +
+                "\nCharset: " + charset +
+                "\nContent: " + content;
     }
 }

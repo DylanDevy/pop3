@@ -61,6 +61,10 @@ public class BaseSessionBuilder {
                                 .build(),
                                 "STAT"
                         )
+                        .addPopCommand(new ListCommandExecutor.Builder()
+                                        .build(),
+                                "LIST"
+                        )
                         .build()
                 )
         ;

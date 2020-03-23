@@ -16,7 +16,7 @@ public class StatCommandExecutor implements PopCommandExecutorInterface {
             return PopCommandExecutor.WRONG_COMMAND_INPUT + " Use: STAT";
         }
 
-        return "+OK " + session.getMaildrop().getMessages().size() + " " + session.getMaildrop().getOctetSize();
+        return "+OK " + session.getMaildrop().getNotMarkedMessageCount() + " " + session.getMaildrop().getNotMarkedOctetSize();
     }
 
     public static class Builder {

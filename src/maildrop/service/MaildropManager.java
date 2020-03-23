@@ -19,20 +19,21 @@ public class MaildropManager {
         Maildrop maildrop = new Maildrop();
         List<Message> messages = messageManager.findAllMessagesByToEmail(user.getEmail());
 
-        int totalSize = 0;
         int octetSize;
+        int totalOctetSize = 0;
         int messageNumber = 1;
         for (Message message : messages) {
-            octetSize = message.getContent().getBytes(Charset.forName(message.getCharset())).length;
+            octetSize = message.toString().getBytes(Charset.forName(message.getCharset())).length;
             message.setOctetSize(octetSize);
             message.setMessageNumber(messageNumber);
 
-            totalSize += octetSize;
+            totalOctetSize += octetSize;
             messageNumber++;
         }
 
         maildrop.setMessages(messages);
-        maildrop.setOctetSize(totalSize);
+        maildrop.setNotMarkedOctetSize(totalOctetSize);
+        maildrop.setNotMarkedMessageCount(messages.size());
 
         return maildrop;
     }
