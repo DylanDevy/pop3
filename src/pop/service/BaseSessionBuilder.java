@@ -77,6 +77,10 @@ public class BaseSessionBuilder {
                                         .build(),
                                 "DELE"
                         )
+                        .addPopCommand(new RsetCommandExecutor.Builder()
+                                        .build(),
+                                "RSET"
+                        )
                         .build()
                 )
         ;
