@@ -3,10 +3,7 @@ package maildrop.repository;
 import database.DatabaseConnection;
 import maildrop.entity.Message;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,21 +22,24 @@ public class MessageRepository {
 
         List<Message> messages = new ArrayList<>();
         Message message;
+        Timestamp time;
         while (rs.next()) {
             message = new Message();
             message.setId(rs.getInt("id"));
             message.setUserIdReceived((Integer) rs.getObject("user_id_received"));
-            message.setDateReceived(rs.getTimestamp("date_received"));
+            time = rs.getTimestamp("date_received");
+            message.setDateReceived(time != null ? time.toInstant() : null);
             message.setFromEmail(rs.getString("from_email"));
             message.setToEmail(rs.getString("to_email"));
             message.setSubject(rs.getString("subject"));
-            message.setDateSent(rs.getTimestamp("date_sent"));
+            message.setDateSent(rs.getTimestamp("date_sent").toInstant());
             message.setMimeVersion(rs.getString("mime_version"));
             message.setContentType(rs.getString("content_type"));
             message.setCharset(rs.getString("charset"));
             message.setContent(rs.getString("content"));
             message.setDeleted(rs.getBoolean("deleted"));
-            message.setDateDeleted(rs.getTimestamp("date_deleted"));
+            time = rs.getTimestamp("date_deleted");
+            message.setDateDeleted(time != null ? time.toInstant() : null);
 
             messages.add(message);
         }

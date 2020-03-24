@@ -5,7 +5,8 @@ import maildrop.entity.Message;
 import pop.entity.Session;
 import pop.enumeration.State;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RsetCommandExecutor implements PopCommandExecutorInterface {
     private RsetCommandExecutor() {}
@@ -26,7 +27,7 @@ public class RsetCommandExecutor implements PopCommandExecutorInterface {
     }
 
     private void resetMessagesMarkedForDeletion(Maildrop maildrop) {
-        HashSet<Message> messagesMarkedForDeletion = maildrop.getMessagesMarkedForDeletion();
+        List<Message> messagesMarkedForDeletion = maildrop.getMessagesMarkedForDeletion();
         int updatedNotMarkedMessageCount = maildrop.getNotMarkedMessageCount();
         int updatedNotMarkedMessageOctetCount = maildrop.getNotMarkedMessageOctetCount();
 
@@ -37,7 +38,7 @@ public class RsetCommandExecutor implements PopCommandExecutorInterface {
 
         maildrop.setNotMarkedMessageCount(updatedNotMarkedMessageCount);
         maildrop.setNotMarkedMessageOctetCount(updatedNotMarkedMessageOctetCount);
-        maildrop.setMessagesMarkedForDeletion(new HashSet<>());
+        maildrop.setMessagesMarkedForDeletion(new ArrayList<>());
     }
 
     public static class Builder {

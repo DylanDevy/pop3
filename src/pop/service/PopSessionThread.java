@@ -25,9 +25,11 @@ public class PopSessionThread extends Thread {
             PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader((socket.getInputStream())));
             printWriter.println("+OK POP3 server is waiting for your commands");
-            while (true) {
-                printWriter.println(popCommandExecutor.execute(bufferedReader.readLine(), session));
-            }
+            String message;
+            do {
+                message = bufferedReader.readLine().trim();
+                printWriter.println(popCommandExecutor.execute(message, session));
+            } while (!message.toUpperCase().equals("QUIT"));
         } catch (IOException e) {
             e.printStackTrace();
         }

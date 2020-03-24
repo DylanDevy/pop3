@@ -1,6 +1,9 @@
 ## POP3 server
 
 ### Get started
+
+For information about POP3 see: [RFC 1939 - Post Office Protocol - Version 3](https://tools.ietf.org/html/rfc1939)
+
 ##### Requirements:
 
 * Java 8 JDK

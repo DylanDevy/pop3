@@ -1,22 +1,21 @@
 package maildrop.entity;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 public class Message {
     private int id;
     private Integer userIdReceived;
-    private Timestamp dateReceived;
+    private Instant dateReceived;
     private String fromEmail;
     private String toEmail;
     private String subject;
-    private Timestamp dateSent;
+    private Instant dateSent;
     private String mimeVersion;
     private String contentType;
     private String charset;
     private String content;
     private boolean deleted;
-    private Timestamp dateDeleted;
+    private Instant dateDeleted;
     private int octetCount;
     private int messageNumber;
 
@@ -36,11 +35,11 @@ public class Message {
         this.userIdReceived = userIdReceived;
     }
 
-    public Timestamp getDateReceived() {
+    public Instant getDateReceived() {
         return dateReceived;
     }
 
-    public void setDateReceived(Timestamp dateReceived) {
+    public void setDateReceived(Instant dateReceived) {
         this.dateReceived = dateReceived;
     }
 
@@ -68,11 +67,11 @@ public class Message {
         this.subject = subject;
     }
 
-    public Timestamp getDateSent() {
+    public Instant getDateSent() {
         return dateSent;
     }
 
-    public void setDateSent(Timestamp dateSent) {
+    public void setDateSent(Instant dateSent) {
         this.dateSent = dateSent;
     }
 
@@ -116,11 +115,11 @@ public class Message {
         this.deleted = deleted;
     }
 
-    public Timestamp getDateDeleted() {
+    public Instant getDateDeleted() {
         return dateDeleted;
     }
 
-    public void setDateDeleted(Timestamp dateDeleted) {
+    public void setDateDeleted(Instant dateDeleted) {
         this.dateDeleted = dateDeleted;
     }
 
@@ -143,7 +142,7 @@ public class Message {
     @Override
     public String toString() {
         return "Received by: " + toEmail +
-                "\nReceived date: " + LocalDateTime.now() +
+                "\nReceived date: " + Instant.now() +
                 "\nFrom: " + fromEmail +
                 "\nTo: " + toEmail +
                 "\nSubject: " + subject +

@@ -62,24 +62,31 @@ public class BaseSessionBuilder {
                                 "STAT"
                         )
                         .addPopCommand(new ListCommandExecutor.Builder()
-                                        .build(),
+                                .build(),
                                 "LIST"
                         )
                         .addPopCommand(new RetrCommandExecutor.Builder()
-                                        .build(),
+                                .build(),
                                 "RETR"
                         )
                         .addPopCommand(new NoopCommandExecutor.Builder()
-                                        .build(),
+                                .build(),
                                 "NOOP"
                         )
                         .addPopCommand(new DeleCommandExecutor.Builder()
-                                        .build(),
+                                .build(),
                                 "DELE"
                         )
                         .addPopCommand(new RsetCommandExecutor.Builder()
-                                        .build(),
+                                .build(),
                                 "RSET"
+                        )
+                        .addPopCommand(new QuitCommandExecutor.Builder()
+                                .setMessageManager(new MessageManager.Builder()
+                                        .build()
+                                )
+                                .build(),
+                                "QUIT"
                         )
                         .build()
                 )

@@ -5,7 +5,7 @@ import maildrop.entity.Message;
 import pop.entity.Session;
 import pop.enumeration.State;
 
-import java.util.HashSet;
+import java.util.List;
 
 public class DeleCommandExecutor implements PopCommandExecutorInterface {
     private DeleCommandExecutor() {}
@@ -42,7 +42,7 @@ public class DeleCommandExecutor implements PopCommandExecutorInterface {
 
         int updatedNotMarkedMessageCount = maildrop.getNotMarkedMessageCount() - 1;
         int updatedNotMarkedMessageOctetCount = maildrop.getNotMarkedMessageOctetCount() - message.getOctetCount();
-        HashSet<Message> updatedMessagesMarkedForDeletion = maildrop.getMessagesMarkedForDeletion();
+        List<Message> updatedMessagesMarkedForDeletion = maildrop.getMessagesMarkedForDeletion();
         updatedMessagesMarkedForDeletion.add(message);
 
         maildrop.setNotMarkedMessageCount(updatedNotMarkedMessageCount);

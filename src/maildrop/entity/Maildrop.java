@@ -1,18 +1,17 @@
 package maildrop.entity;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 public class Maildrop {
     private List<Message> messages;
     private int notMarkedMessageOctetCount;
     private int notMarkedMessageCount;
-    private HashSet<Message> messagesMarkedForDeletion;
+    private List<Message> messagesMarkedForDeletion;
 
     public Maildrop() {
         this.messages = new ArrayList<>();
-        this.messagesMarkedForDeletion = new HashSet<>();
+        this.messagesMarkedForDeletion = new ArrayList<>();
     }
 
     public List<Message> getMessages() {
@@ -39,11 +38,11 @@ public class Maildrop {
         this.notMarkedMessageCount = notMarkedMessageCount;
     }
 
-    public HashSet<Message> getMessagesMarkedForDeletion() {
+    public List<Message> getMessagesMarkedForDeletion() {
         return messagesMarkedForDeletion;
     }
 
-    public void setMessagesMarkedForDeletion(HashSet<Message> messagesMarkedForDeletion) {
+    public void setMessagesMarkedForDeletion(List<Message> messagesMarkedForDeletion) {
         this.messagesMarkedForDeletion = messagesMarkedForDeletion;
     }
 }
