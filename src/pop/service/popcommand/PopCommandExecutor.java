@@ -23,12 +23,9 @@ public class PopCommandExecutor {
     public String execute(String command, Session session) {
         String parsedCommand = command.split(" ")[0];
 
-        PopCommandExecutorInterface commandHandler = commands.get(parsedCommand);
-        if (commandHandler == null) {
-            return "-ERR sorry no such command found";
-        }
+        PopCommandExecutorInterface commandHandler = commands.get(parsedCommand.toUpperCase());
 
-        return commandHandler.execute(command, session);
+        return commandHandler != null ? commandHandler.execute(command, session) : "-ERR sorry no such command found";
     }
 
     public static class Builder {

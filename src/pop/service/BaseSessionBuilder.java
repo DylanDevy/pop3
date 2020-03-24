@@ -69,6 +69,10 @@ public class BaseSessionBuilder {
                                         .build(),
                                 "RETR"
                         )
+                        .addPopCommand(new NoopCommandExecutor.Builder()
+                                        .build(),
+                                "NOOP"
+                        )
                         .build()
                 )
         ;
