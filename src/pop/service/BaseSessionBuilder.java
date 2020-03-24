@@ -73,6 +73,10 @@ public class BaseSessionBuilder {
                                         .build(),
                                 "NOOP"
                         )
+                        .addPopCommand(new DeleCommandExecutor.Builder()
+                                        .build(),
+                                "DELE"
+                        )
                         .build()
                 )
         ;

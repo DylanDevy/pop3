@@ -21,12 +21,12 @@ public class RetrCommandExecutor implements PopCommandExecutorInterface {
             int messageNumber = Integer.parseInt(commandParts[1]);
             if (maildrop.getMessages().size() < messageNumber || messageNumber < 1) {
                 return "-ERR no such message";
-            } else if (maildrop.getMessagesMarkedAsDeleted().contains(maildrop.getMessages().get(messageNumber - 1))) {
-                return "-ERR message is marked for deletion";
+            } else if (maildrop.getMessagesMarkedForDeletion().contains(maildrop.getMessages().get(messageNumber - 1))) {
+                return "-ERR message " + messageNumber + " marked for deletion";
             } else {
                 Message message = maildrop.getMessages().get(messageNumber - 1);
 
-                return "+OK " + message.getOctetSize() + " octets\n" + message.toString();
+                return "+OK " + message.getOctetCount() + " octets\n" + message.toString();
             }
         } catch (NumberFormatException e) {
             return "-ERR wrong input, please provide an integer";

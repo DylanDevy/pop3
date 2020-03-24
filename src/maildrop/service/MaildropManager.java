@@ -24,7 +24,7 @@ public class MaildropManager {
         int messageNumber = 1;
         for (Message message : messages) {
             octetSize = message.toString().getBytes(Charset.forName(message.getCharset())).length;
-            message.setOctetSize(octetSize);
+            message.setOctetCount(octetSize);
             message.setMessageNumber(messageNumber);
 
             totalOctetSize += octetSize;
@@ -32,7 +32,7 @@ public class MaildropManager {
         }
 
         maildrop.setMessages(messages);
-        maildrop.setNotMarkedOctetSize(totalOctetSize);
+        maildrop.setNotMarkedMessageOctetCount(totalOctetSize);
         maildrop.setNotMarkedMessageCount(messages.size());
 
         return maildrop;

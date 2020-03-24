@@ -17,7 +17,7 @@ public class Message {
     private String content;
     private boolean deleted;
     private Timestamp dateDeleted;
-    private int octetSize;
+    private int octetCount;
     private int messageNumber;
 
     public int getId() {
@@ -124,12 +124,12 @@ public class Message {
         this.dateDeleted = dateDeleted;
     }
 
-    public int getOctetSize() {
-        return octetSize;
+    public int getOctetCount() {
+        return octetCount;
     }
 
-    public void setOctetSize(int octetSize) {
-        this.octetSize = octetSize;
+    public void setOctetCount(int octetCount) {
+        this.octetCount = octetCount;
     }
 
     public int getMessageNumber() {

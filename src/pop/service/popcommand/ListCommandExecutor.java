@@ -27,12 +27,12 @@ public class ListCommandExecutor implements PopCommandExecutorInterface {
             int messageNumber = Integer.parseInt(arg);
             if (maildrop.getMessages().size() < messageNumber || messageNumber < 1) {
                 return "-ERR no such message";
-            } else if (maildrop.getMessagesMarkedAsDeleted().contains(maildrop.getMessages().get(messageNumber - 1))) {
-                return "-ERR message is marked for deletion";
+            } else if (maildrop.getMessagesMarkedForDeletion().contains(maildrop.getMessages().get(messageNumber - 1))) {
+                return "-ERR message " + messageNumber + " marked for deletion";
             } else {
                 Message message = maildrop.getMessages().get(messageNumber - 1);
 
-                return "+OK " + messageNumber + " " + message.getOctetSize();
+                return "+OK " + messageNumber + " " + message.getOctetCount();
             }
         } catch (NumberFormatException e) {
             return "-ERR wrong input, please provide an integer";
@@ -41,13 +41,13 @@ public class ListCommandExecutor implements PopCommandExecutorInterface {
 
     private String executeListNoArgGiven(Maildrop maildrop) {
         int messageNumber;
-        StringBuilder response = new StringBuilder("+OK " + maildrop.getNotMarkedMessageCount() + " (" + maildrop.getNotMarkedOctetSize() + " octets)\n");
+        StringBuilder response = new StringBuilder("+OK " + maildrop.getNotMarkedMessageCount() + " (" + maildrop.getNotMarkedMessageOctetCount() + " octets)\n");
         for (Message message : maildrop.getMessages()) {
             messageNumber = message.getMessageNumber();
-            if (!maildrop.getMessagesMarkedAsDeleted().contains(maildrop.getMessages().get(messageNumber - 1))) {
+            if (!maildrop.getMessagesMarkedForDeletion().contains(maildrop.getMessages().get(messageNumber - 1))) {
                 response.append(messageNumber);
                 response.append(" ");
-                response.append(message.getOctetSize());
+                response.append(message.getOctetCount());
                 response.append("\n");
             }
         }
