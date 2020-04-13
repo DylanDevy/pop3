@@ -12,4 +12,4 @@ For information about POP3 see: [RFC 1939 - Post Office Protocol - Version 3](ht
 ##### Database:
 
 * Go to `database.DatabaseConnection` and change database connection values according to your situation
-* Now go to `database.Init` and run `main` method this will create all the tables needed and inset some test data. All the passwords are `password`
+* Now go to `database.Init` and run `main` method this will create all the tables needed and insert some test data. All the passwords are `password`
